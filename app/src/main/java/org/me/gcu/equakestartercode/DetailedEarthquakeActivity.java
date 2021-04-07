@@ -43,8 +43,8 @@ public class DetailedEarthquakeActivity extends AppCompatActivity {
             pubDate = findViewById(R.id.PubDateDisplay);
             pubDate.setText(selected.getPubDate());
             geoLat = findViewById(R.id.LatitudeDisplay);
-            geoLat.setText(selected.getGeoLat());
+            geoLat.setText("Latitude: " + selected.getGeoLat());
             geoLong = findViewById(R.id.LongitudeDisplay);
-            geoLong.setText(selected.getGeoLong());
+            geoLong.setText("Longitude: " + selected.getGeoLong());
     }
 }

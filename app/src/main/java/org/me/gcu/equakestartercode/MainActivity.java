@@ -17,8 +17,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -73,6 +71,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Set up the raw links to the graphical components
+        // topDataDisplay is where the data gets put
+        // bottmNavigationView is the bottom navbar
         topDataDisplay = findViewById(R.id.topDataDisplay);
         bottomNavigationView = findViewById((R.id.bottom_navigation));
 
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity
                 Quake q = quakeLinkedList.get(i);
 
                 // OnClickListener used to listen for when an earthquake entry is clicked on
-                // Used to display the detailed earthquake activity information
+                // Used to display the detailed earthquake activity information in topDataDisplay
                 textView.setOnClickListener(v->{
                     Intent intent = new Intent(getApplicationContext(), DetailedEarthquakeActivity.class);
                     Bundle bundle = new Bundle();
