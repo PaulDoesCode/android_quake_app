@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity
                 topDataDisplay.addView(textView);
             }
         }
-    };
+    }
 
     // Parses the XML string into a LinkedList of earthquakes
     private LinkedList<Quake> parseData(String dataToParse)
