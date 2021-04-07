@@ -5,14 +5,19 @@
 package org.me.gcu.equakestartercode;
 
 // Imports used
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +34,7 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
     private Button dateSearch;
     private LinearLayout dateLinearLayout;
     private ArrayList <Quake> quakeArrayList;
+    private BottomNavigationView bottomNavigationView;
 
     // When the activity runs, carry out onCreate function
     @Override
@@ -41,6 +47,38 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
         dateSearch.setOnClickListener(this);
         dateLinearLayout = (LinearLayout)findViewById(R.id.DateSearchResults);
         quakeArrayList = (ArrayList <Quake>) getIntent().getExtras().getSerializable("data");
+
+        // bottomNavigationView listener, used to check what button in the bottom navbar is clicked
+        // This will then create a new activity based on whatever has been clicked (i.e., if it's "search" go to QuakeSearch")
+        bottomNavigationView = findViewById((R.id.bottom_navigation));
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item.setChecked(true);
+                if (bottomNavigationView.getMenu().getItem(0).isChecked()){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", quakeArrayList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else if (bottomNavigationView.getMenu().getItem(1).isChecked()){
+                    Intent intent = new Intent(getApplicationContext(), QuakeSearch.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", quakeArrayList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else if (bottomNavigationView.getMenu().getItem(2).isChecked()){
+                    Intent intent = new Intent(getApplicationContext(), QuakeMapActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", quakeArrayList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
     }
 
     // When the search button is pressed, carry out onClick function
@@ -115,25 +153,25 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
         }
         // Turn variables into text UI elements
         TextView quakeNorthText = new TextView(getApplicationContext());
-        quakeNorthText.setText("Northernmost: " + quakeNorth.getLocation());
+        quakeNorthText.setText("Northernmost: " + quakeNorth.getLocation().substring(10));
 
         TextView quakeEastText = new TextView(getApplicationContext());
-        quakeEastText.setText("Easternmost: " + quakeEast.getLocation());
+        quakeEastText.setText("Easternmost: " + quakeEast.getLocation().substring(10));
 
         TextView quakeSouthText = new TextView(getApplicationContext());
-        quakeSouthText.setText("Southernmost: " + quakeSouth.getLocation());
+        quakeSouthText.setText("Southernmost: " + quakeSouth.getLocation().substring(10));
 
         TextView quakeWestText = new TextView(getApplicationContext());
-        quakeWestText.setText("Westernmost: " + quakeWest.getLocation());
+        quakeWestText.setText("Westernmost: " + quakeWest.getLocation().substring(10));
 
         TextView largestMagnitudeText = new TextView(getApplicationContext());
-        largestMagnitudeText.setText("Largest magnitude: " + largestMagnitude.getLocation());
+        largestMagnitudeText.setText("Largest magnitude: " + largestMagnitude.getLocation().substring(10));
 
         TextView deepQuakeText = new TextView(getApplicationContext());
-        deepQuakeText.setText("Deepest quake: " + deepQuake.getLocation());
+        deepQuakeText.setText("Deepest quake: " + deepQuake.getLocation().substring(10));
 
         TextView shallowQuakeText = new TextView(getApplicationContext());
-        shallowQuakeText.setText("Shallowest quake: " + shallowQuake.getLocation());
+        shallowQuakeText.setText("Shallowest quake: " + shallowQuake.getLocation().substring(10));
 
         // Add to linear layout
         dateLinearLayout.addView(quakeNorthText);

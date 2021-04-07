@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Name:  Paul Harbison-Smith -->
+<!-- No:    S1712745 -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id = "@+id/menu" android:icon = "@drawable/ic_baseline_home_24" android:title = "home">
+
+</item>
+    <item android:id = "@+id/search" android:icon = "@drawable/ic_baseline_search_24" android:title = "search">
+
+    </item>
+    <item android:id = "@+id/map" android:icon = "@drawable/ic_baseline_location_on_24" android:title = "map">
+    </item>
+</menu>
