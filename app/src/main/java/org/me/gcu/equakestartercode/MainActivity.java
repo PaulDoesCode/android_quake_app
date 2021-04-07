@@ -39,7 +39,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-// MainActivity class
+// MainActivity class used for most functionality
+// Primarily used for parsing earthquake data
 public class MainActivity extends AppCompatActivity
 {
     // Declare variables
