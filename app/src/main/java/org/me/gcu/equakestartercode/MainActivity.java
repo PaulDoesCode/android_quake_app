@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -65,14 +64,14 @@ public class MainActivity extends AppCompatActivity
             quakeLinkedList = (LinkedList<Quake>) getIntent().getExtras().getSerializable("data");
         } catch (Exception e) {
             quakeLinkedList = null;
-        };
+        }
 
         // Attaches the XML layout to this activity
         setContentView(R.layout.activity_main);
 
         // Set up the raw links to the graphical components
         // topDataDisplay is where the data gets put
-        // bottmNavigationView is the bottom navbar
+        // bottomNavigationView is the bottom navbar
         topDataDisplay = findViewById(R.id.topDataDisplay);
         bottomNavigationView = findViewById((R.id.bottom_navigation));
 
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Refreshes the XML data every 10 minutes or so
+        // Refreshes the XML data every 10 minutes (600000ms)
         final Handler quakeHandler = new Handler();
         Timer quakeTimer = new Timer();
         TimerTask doTimerTask = new TimerTask() {
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity
                 }
             };
             quakeTimer.schedule(doTimerTask, 0, 600000);
-        };
+        }
 
     // Runs getQuakeXml which retrieves the XML string in the background and parses it into a LinkedList of earthquakes
     public void startProgress()
@@ -191,23 +190,38 @@ public class MainActivity extends AppCompatActivity
             // Then it adds the data to the LinearLayout
             for(int i = 0; i < quakeLinkedList.size();i++)   {
                 TextView textView = new TextView(getApplicationContext());
+
+                // Set text for TextView
                 textView.setText(quakeLinkedList.get(i).getLocation() + "\n" + quakeLinkedList.get(i).getMagnitude());
+
+                // Set alignment for TextView
                 textView.setGravity(Gravity.CENTER);
+
+                // Set padding for TextView
+                textView.setPadding(50, 50, 50, 50);
+
+                // Use LinearLayout for LayoutParams to set margins for the TextView background (i.e., the rectangle surrounding each earthquake entry)
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(10, 10, 10, 10);
+                textView .setLayoutParams(lp);
+
+                // Set minimum width for TextView
+                textView.setMinimumWidth(1000);
 
                 // Code for checking earthquake magnitude
                 String Magnitude = quakeLinkedList.get(i).getMagnitude().substring(11);
 
-                // If the magnitude is less than 1, set background colour to green
-                // If magnitude is equal to or greater than 1 and less than 1.5, set background colour to yellow
-                // If magnitude is greater than or equal to 1.5, set background color to red
+                // If the magnitude is less than 1, set rectangle colour to green
+                // If magnitude is equal to or greater than 1 and less than 1.5, set rectangle colour to yellow
+                // If magnitude is greater than or equal to 1.5, set rectangle colour to red
                 if (Float.parseFloat(Magnitude) < 1) {
-                    textView.setBackgroundColor(Color.GREEN);
+                    textView.setBackgroundResource(R.drawable.quake_border_green);
                 }
                 else if (Float.parseFloat(Magnitude) >= 1 && Float.parseFloat(Magnitude) < 1.5)    {
-                    textView.setBackgroundColor(Color.YELLOW);
+                    textView.setBackgroundResource(R.drawable.quake_border_yellow);
                 }
                 else if (Float.parseFloat(Magnitude) >= 1.5)   {
-                    textView.setBackgroundColor(Color.RED);
+                    textView.setBackgroundResource(R.drawable.quake_border_red);
                 }
 
                 // Set q to quakeLinkedList.get(i) since quakeLinkedList.get(i) won't work on it's own with bundle.putSerializable

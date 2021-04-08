@@ -23,6 +23,21 @@
             android:layout_height="fill_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/introText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="Earthquakes are displayed from strongest to weakest and are accordingly colour-coded. Click on an earthquake to find additional details about a certain earthquake. Use the bottom navbar menu to navigate to the search page and the map page."
+                android:textSize="18sp" />
+
             <LinearLayout
                 android:id="@+id/topDataDisplay"
                 android:layout_width="match_parent"

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Name:  Paul Harbison-Smith -->
+<!-- No:    S1712745 -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <solid android:color="@android:color/transparent"/>
+    <stroke android:width="6dip" android:color="#4CAF50"/>
+</shape>

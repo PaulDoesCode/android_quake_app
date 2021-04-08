@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -84,6 +85,7 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
     // When the search button is pressed, carry out onClick function
     @Override
     public void onClick(View v) {
+
         // Instantiate variables
         String startDateText = startDate.getText().toString();
         String endDateText = endDate.getText().toString();
@@ -97,60 +99,71 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
         Quake largestMagnitude = null;
         Quake deepQuake = null;
         Quake shallowQuake = null;
+
         // FOR loop loops through the array list and gathers the items which fall between the selected start and end dates,
         // as seen in the IF statement
         for (int i = 0; i < quakeArrayList.size(); i++)    {
-            Date date = parseDate(quakeArrayList.get(i).getPubDate());
+            Date date = parseDateXml(quakeArrayList.get(i).getPubDate());
             if (date.after(startDateDate) && date.before(endDateDate))  {
                 quakeDates.add(quakeArrayList.get(i));
             }
         }
+
+        Log.e("jayTag", String.valueOf(quakeDates.size()));
+
         // IF array list exists, loop through it and assign values to variables for each item in the array list
-        if (quakeArrayList.size() >= 0) {
-        for (int i = 0; i < quakeArrayList.size(); i++)    {
+        if (quakeDates.size() >= 0) {
+        for (int i = 0; i < quakeDates.size(); i++)    {
             if (i == 0) {
-                quakeNorth = quakeArrayList.get(i);
-                quakeEast = quakeArrayList.get(i);
-                quakeSouth = quakeArrayList.get(i);
-                quakeWest = quakeArrayList.get(i);
-                largestMagnitude = quakeArrayList.get(i);
-                deepQuake = quakeArrayList.get(i);
-                shallowQuake = quakeArrayList.get(i);
+                quakeNorth = quakeDates.get(i);
+                quakeEast = quakeDates.get(i);
+                quakeSouth = quakeDates.get(i);
+                quakeWest = quakeDates.get(i);
+                largestMagnitude = quakeDates.get(i);
+                deepQuake = quakeDates.get(i);
+                shallowQuake = quakeDates.get(i);
             }
+
             // IF statements here compare the current index of the array with the forthcoming index and decide which one should take the place
             // of "northernmost quake" or "quake with largest magnitude", for example
-            if (Float.parseFloat(quakeNorth.getGeoLat()) < Float.parseFloat(quakeArrayList.get(i).getGeoLat()))    {
-                quakeNorth = quakeArrayList.get(i);
+            if (Float.parseFloat(quakeNorth.getGeoLat()) < Float.parseFloat(quakeDates.get(i).getGeoLat()))    {
+                quakeNorth = quakeDates.get(i);
             }
-            if (Float.parseFloat(quakeEast.getGeoLong()) < Float.parseFloat(quakeArrayList.get(i).getGeoLong()))   {
-                quakeEast = quakeArrayList.get(i);
+
+            if (Float.parseFloat(quakeEast.getGeoLong()) < Float.parseFloat(quakeDates.get(i).getGeoLong()))   {
+                quakeEast = quakeDates.get(i);
             }
-            if (Float.parseFloat(quakeSouth.getGeoLat()) > Float.parseFloat(quakeArrayList.get(i).getGeoLat()))   {
-                quakeSouth = quakeArrayList.get(i);
+
+            if (Float.parseFloat(quakeSouth.getGeoLat()) > Float.parseFloat(quakeDates.get(i).getGeoLat()))   {
+                quakeSouth = quakeDates.get(i);
             }
-            if (Float.parseFloat(quakeWest.getGeoLong()) > Float.parseFloat(quakeArrayList.get(i).getGeoLong()))   {
-                quakeWest = quakeArrayList.get(i);
+
+            if (Float.parseFloat(quakeWest.getGeoLong()) > Float.parseFloat(quakeDates.get(i).getGeoLong()))   {
+                quakeWest = quakeDates.get(i);
             }
+
             // Magnitude is saved as a string "Magnitude: [X VALUE]" so this code simply extracts the required value alone
             // using substring rather than the value + the associated text
-            String currentLargestMagnitude = quakeArrayList.get(i).getMagnitude().substring(11);
+            String currentLargestMagnitude = quakeDates.get(i).getMagnitude().substring(11);
             String largestMagnitudeSoFar = largestMagnitude.getMagnitude().substring(11);
             if (Float.parseFloat(largestMagnitudeSoFar) < Float.parseFloat(currentLargestMagnitude))   {
-                largestMagnitude = quakeArrayList.get(i);
+                largestMagnitude = quakeDates.get(i);
             }
+
             // Depth is saved as a string "Depth: [X VALUE]" so this code simply extracts the required value alone
             // using substring rather than the value + the associated text
-            String currentDeepestQuake = quakeArrayList.get(i).getDepth().substring(7);
+            String currentDeepestQuake = quakeDates.get(i).getDepth().substring(7);
             currentDeepestQuake = currentDeepestQuake.substring(0, currentDeepestQuake.length() - 3);
             String deepestQuakeSoFar = deepQuake.getDepth().substring(7);
             deepestQuakeSoFar = deepestQuakeSoFar.substring(0, deepestQuakeSoFar.length() - 3);
             if (Float.parseFloat(deepestQuakeSoFar) < Float.parseFloat(currentDeepestQuake))   {
-                deepQuake = quakeArrayList.get(i);
+                deepQuake = quakeDates.get(i);
             }
             if (Float.parseFloat(deepestQuakeSoFar) > Float.parseFloat(currentDeepestQuake))   {
-                shallowQuake = quakeArrayList.get(i);
+                shallowQuake = quakeDates.get(i);
             }
         }
+
         // Turn variables into text UI elements
         TextView quakeNorthText = new TextView(getApplicationContext());
         quakeNorthText.setText("Northernmost: " + quakeNorth.getLocation().substring(10));
@@ -173,6 +186,17 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
         TextView shallowQuakeText = new TextView(getApplicationContext());
         shallowQuakeText.setText("Shallowest quake: " + shallowQuake.getLocation().substring(10));
 
+        // Remove views (especially useful for clearing views when searching for new date parameters, will remove data left on-screen before putting new data on-screen
+        dateLinearLayout.removeAllViews();
+
+        quakeNorthText.setPadding(0, 0, 0, 30);
+        quakeEastText.setPadding(0, 0, 0, 30);
+        quakeSouthText.setPadding(0, 0, 0, 30);
+        quakeWestText.setPadding(0, 0, 0, 30);
+        largestMagnitudeText.setPadding(0, 0, 0, 30);
+        deepQuakeText.setPadding(0, 0, 0, 30);
+        shallowQuakeText.setPadding(0, 0, 0, 30);
+
         // Add to linear layout
         dateLinearLayout.addView(quakeNorthText);
         dateLinearLayout.addView(quakeEastText);
@@ -181,16 +205,29 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
         dateLinearLayout.addView(largestMagnitudeText);
         dateLinearLayout.addView(deepQuakeText);
         dateLinearLayout.addView(shallowQuakeText);
+
         }
     }
 
-    // Parse date as String
+    // Parse date from the user input as date
     public Date parseDate(String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.mm.yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         try {
             return simpleDateFormat.parse(date);
         }
         catch(Exception e)   {
+            e.printStackTrace();
+            return new Date();
+        }
+    }
+
+    // Parse date from the XML data as date
+    public Date parseDateXml(String date)   {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+        try {
+            return simpleDateFormat.parse(date);
+        }
+        catch(Exception e)  {
             e.printStackTrace();
             return new Date();
         }

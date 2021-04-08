@@ -36,9 +36,12 @@ public class QuakeMapActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         quakeArrayList = (ArrayList<Quake>) getIntent().getExtras().getSerializable("data");
+
         setContentView(R.layout.activity_quake_map);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -105,7 +108,7 @@ public class QuakeMapActivity extends FragmentActivity implements OnMapReadyCall
                     Double.parseDouble((quakeArrayList.get(i).getGeoLong())))).title(quakeArrayList.get(i).getLocation() +
                     "," + quakeArrayList.get(i).getMagnitude()).icon(quakeMapMarkerIcon));
         }
-        // Adjust camera
+        // Adjust the camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(unitedKingdom));
     }
 }
