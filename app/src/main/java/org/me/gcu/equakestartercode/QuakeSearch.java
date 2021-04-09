@@ -109,8 +109,6 @@ public class QuakeSearch extends AppCompatActivity implements View.OnClickListen
             }
         }
 
-        Log.e("jayTag", String.valueOf(quakeDates.size()));
-
         // IF array list exists, loop through it and assign values to variables for each item in the array list
         if (quakeDates.size() >= 0) {
         for (int i = 0; i < quakeDates.size(); i++)    {
